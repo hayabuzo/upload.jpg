@@ -7,7 +7,7 @@ const imgSize = [480,640];
 const screenScale = 0.75;
 
 async function fetchEnvVariables() {
-  const response = await fetch('/api/env');
+  const response = await fetch('http://localhost:3000/api/env');
   if (!response.ok) {
     throw new Error('Network response was not ok');
   }
