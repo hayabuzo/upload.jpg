@@ -6,6 +6,12 @@ let fit;
 const imgSize = [480,640];
 const screenScale = 0.75;
 
+async function fetchEnvVariables() {
+  const response = await fetch('/api/env');
+  const data = await response.json();
+  return data;
+}
+
 function setup() {
 
 	pixelDensity(1); 
@@ -45,7 +51,12 @@ function takeSnapshot() {
   sendToTelegram(img.canvas.toDataURL());
 }
 
-function sendToTelegram(imageDataUrl) {
+async function sendToTelegram(imageDataUrl) {
+
+  const env = await fetchEnvVariables();
+  const TELEGRAM_BOT_TOKEN = env.TELEGRAM_BOT_TOKEN;
+  const CHAT_ID = env.CHAT_ID;
+
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
     .then(response => response.blob())
