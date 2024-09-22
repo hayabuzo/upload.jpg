@@ -25,7 +25,7 @@ jobs:
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         CHAT_ID: ${{ secrets.CHAT_ID }}
-      run: node deploy.js
+      run: node sketch.js
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
