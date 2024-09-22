@@ -21,10 +21,15 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run your custom script
+    - name: Create .env file
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         CHAT_ID: ${{ secrets.CHAT_ID }}
+      run: |
+        echo "TELEGRAM_BOT_TOKEN=${{ secrets.TELEGRAM_BOT_TOKEN }}" >> .env
+        echo "CHAT_ID=${{ secrets.CHAT_ID }}" >> .env
+
+    - name: Run script
       run: node run-scripts.js
 
     - name: Deploy to GitHub Pages
