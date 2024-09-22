@@ -21,11 +21,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Build project
+    - name: Run your custom script
       env:
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         CHAT_ID: ${{ secrets.CHAT_ID }}
-      run: npm run build
+      run: node deploy.js
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
