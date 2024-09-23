@@ -7,7 +7,7 @@ let CID = '-1002425906440';
 let TBT = undefined;
 
 const imgSize = [480,640];
-const screenScale = 0.75;
+const screenScale = 1.0;
 
 function setup() {
 
