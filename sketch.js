@@ -90,9 +90,13 @@ function draw() {
       pop();
       image(img,0,tr.y,width,height);
       text("🔁", width*0.5, height*0.95);
-      if (mouseIsPressed && mouseY>height*0.8) { 
+      if (mouseIsPressed) { 
         mouseIsPressed = false; 
-        state = 'capture'
+        if (mouseY>height*0.8) {
+          state = 'capture'
+        } else {
+          window.location.href = 'https://t.me/ff4651e9e031';
+        }
       }
       break;
   }
