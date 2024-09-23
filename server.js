@@ -2,10 +2,7 @@
 const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
-const multer = require('multer');
 const FormData = require('form-data');
-const fs = require('fs');
-const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -14,21 +11,24 @@ app.use(cors({
   origin: 'https://hayabuzo.github.io', // Разрешить запросы только с этого домена
 }));
 
-const upload = multer({ dest: 'uploads/' });
+app.use(express.json()); // Для парсинга JSON тела запроса
 
 const TBT = process.env.TELEGRAM_BOT_TOKEN;
 const CID = '-1002425906440'; // Замените на ваш chat_id
 
 // Функция для отправки изображения в Telegram
-async function sendToTelegram(filePath) {
+async function sendToTelegram(imageDataUrl) {
   try {
+    // Преобразование DataURL в Blob
+    const response = await axios.get(imageDataUrl, { responseType: 'arraybuffer' });
+    const blob = new Blob([response.data], { type: 'image/png' });
     const formData = new FormData();
     formData.append('chat_id', CID);
-    formData.append('photo', fs.createReadStream(filePath));
+    formData.append('photo', blob, 'snapshot.png');
 
     const telegramResponse = await axios.post(`https://api.telegram.org/bot${TBT}/sendPhoto`, formData, {
       headers: {
-        ...formData.getHeaders()
+        'Content-Type': 'multipart/form-data'
       }
     });
 
@@ -45,14 +45,12 @@ async function sendToTelegram(filePath) {
 }
 
 // Маршрут для обработки запросов от фронтенда
-app.post('/api/send-image', upload.single('image'), async (req, res) => {
+app.post('/api/send-image', async (req, res) => {
   try {
     if (!TBT) {
       return res.status(500).send('Telegram Bot Token is not set');
     }
-    const filePath = path.join(__dirname, req.file.path);
-    await sendToTelegram(filePath);
-    fs.unlinkSync(filePath); // Удалить временный файл после отправки
+    await sendToTelegram(req.body.image);
     res.status(200).send('Image sent successfully');
   } catch (error) {
     console.error('Error sending image:', error);

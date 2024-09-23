@@ -151,22 +151,18 @@ function takeSnapshot() {
 }
 
 async function sendImage() {
-  // Преобразование графики в DataURL
-  const dataURL = img.canvas.toDataURL();
-  const formData = new FormData();
-  formData.append('image', dataURL);
-  try {
-    const response = await fetch('https://upload-jpg.vercel.app/api/send-image', {
-      method: 'POST',
-      body: formData
-    });
 
-    if (response.ok) {
-      console.log('Image sent successfully');
-    } else {
-      console.error('Failed to send image');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
+  const imageDataUrl = img.canvas.toDataURL();
+
+  fetch('https://upload-jpg.vercel.app/api/send-image', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ image: imageDataUrl })
+  })
+  .then(response => response.text())
+  .then(data => console.log(data))
+  .catch(error => console.error('Error:', error));
+  
 }
