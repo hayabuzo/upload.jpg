@@ -24,14 +24,16 @@ async function sendToTelegram(imageDataUrl) {
   try {
     // Преобразование DataURL в Blob
     const response = await axios.get(imageDataUrl, { responseType: 'arraybuffer' });
-    const blob = new Blob([response.data], { type: 'image/png' });
     const formData = new FormData();
     formData.append('chat_id', CID);
-    formData.append('photo', blob, 'snapshot.png');
+    formData.append('photo', response.data, {
+      filename: 'snapshot.png',
+      contentType: 'image/png'
+    });
 
     const telegramResponse = await axios.post(`https://api.telegram.org/bot${TBT}/sendPhoto`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data'
+        ...formData.getHeaders()
       }
     });
 
