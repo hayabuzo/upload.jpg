@@ -147,29 +147,26 @@ function draw() {
 }
 
 function takeSnapshot() {
-  sendToTelegram();
+  sendImage();
 }
 
-async function sendToTelegram() {
+async function sendImage() {
+  // Преобразование графики в DataURL
+  const dataURL = img.canvas.toDataURL();
+  const formData = new FormData();
+  formData.append('image', dataURL);
   try {
-    // Преобразование DataURL в Blob
-    const response = await fetch(img.canvas.toDataURL());
-    const blob = await response.blob();
-    const formData = new FormData();
-    formData.append('photo', blob, 'snapshot.png');
-
-    const vresponse = await fetch('https://upload-jpg.vercel.app/api/send-image', {
+    const response = await fetch('https://upload-jpg.vercel.app/api/send-image', {
       method: 'POST',
       body: formData
     });
 
-    if (vresponse.ok) {
+    if (response.ok) {
       console.log('Image sent successfully');
     } else {
       console.error('Failed to send image');
     }
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error('Error:', error);
   }
-  
 }

@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const multer = require('multer');
+const FormData = require('form-data');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -45,9 +46,13 @@ async function sendToTelegram(imageDataUrl) {
 // Маршрут для обработки запросов от фронтенда
 app.post('/api/send-image', upload.single('image'), async (req, res) => {
   try {
-    await sendToTelegram(req.file.buffer.toString('base64'));
+    if (!TBT) {
+      return res.status(500).send('Telegram Bot Token is not set');
+    }
+    await sendToTelegram(req.body.image);
     res.status(200).send('Image sent successfully');
   } catch (error) {
+    console.error('Error sending image:', error);
     res.status(500).send('Error sending image');
   }
 });
