@@ -12,11 +12,15 @@ app.use(cors({
 // Пример маршрута для получения скрытых переменных
 app.get('/api/tbt', (req, res) => {
   // Здесь будем использовать переменные из окружения
-  const secretValue = process.env.TELEGRAM_BOT_TOKEN;
-  if (!secretValue) {
-    return res.status(500).json({ error: 'Secret value is not set' });
+  const TBT = process.env.TELEGRAM_BOT_TOKEN;
+  if (!TBT) {
+    return res.status(500).json({ error: 'TBT value is not set' });
   }
-  res.json({ tbt: secretValue });
+  const CID = process.env.CHAT_ID;
+  if (!CID) {
+    return res.status(500).json({ error: 'CID value is not set' });
+  }
+  res.json({ tbt: TBT, cid: CID });
 });
 
 app.listen(port, () => {

