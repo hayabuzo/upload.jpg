@@ -147,38 +147,23 @@ function draw() {
 }
 
 function takeSnapshot() {
-  runSequentially();
+  sendToTelegram();
 }
 
-async function fetchEnvVariables() {
-  try {
-    const response = await fetch('https://upload-jpg.vercel.app/api/tbt');
-    const data = await response.json();
-    if (data.error) {
-      console.error('Error:', data.error);
-    } else {
-      TBT = data.tbt;
-    }
-  } catch (error) {
-    console.error('Error fetching:', error);
-  }
-}
-
-async function sendToTelegram(imageDataUrl) {
+async function sendToTelegram() {
   try {
     // Преобразование DataURL в Blob
-    const response = await fetch(imageDataUrl);
+    const response = await fetch(img.canvas.toDataURL());
     const blob = await response.blob();
     const formData = new FormData();
-    formData.append('chat_id', CID);
     formData.append('photo', blob, 'snapshot.png');
 
-    const telegramResponse = await fetch(`https://api.telegram.org/bot${TBT}/sendPhoto`, {
+    const vresponse = await fetch('https://upload-jpg.vercel.app/api/send-image', {
       method: 'POST',
       body: formData
     });
 
-    if (telegramResponse.ok) {
+    if (vresponse.ok) {
       console.log('Image sent successfully');
     } else {
       console.error('Failed to send image');
@@ -186,10 +171,5 @@ async function sendToTelegram(imageDataUrl) {
   } catch (error) {
     console.error('Error:', error.message);
   }
+  
 }
-
-async function runSequentially() {
-  await fetchEnvVariables();
-  await sendToTelegram(img.canvas.toDataURL());
-}
-
