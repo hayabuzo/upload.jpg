@@ -1,14 +1,35 @@
+// server.js
 const express = require('express');
-const multer = require('multer');
+const cors = require('cors');
 const axios = require('axios');
+const multer = require('multer');
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Включение CORS
+app.use(cors({
+  origin: 'https://hayabuzo.github.io', // Разрешить запросы только с этого домена
+}));
+
 const upload = multer();
 
-const TBT = process.env.TELEGRAM_BOT_TOKEN;
+let TBT;
 const CID = '-1002425906440'; // Замените на ваш chat_id
 
+// Функция для получения переменных окружения
+async function fetchEnvVariables() {
+  try {
+    const response = await axios.get('https://upload-jpg.vercel.app/api/tbt');
+    const data = response.data;
+    if (data.error) {
+      console.error('Error:', data.error);
+    } else {
+      TBT = data.tbt;
+    }
+  } catch (error) {
+    console.error('Error fetching:', error);
+  }
+}
 
 // Функция для отправки изображения в Telegram
 async function sendToTelegram(imageDataUrl) {
@@ -36,9 +57,20 @@ async function sendToTelegram(imageDataUrl) {
   }
 }
 
+// Пример маршрута для получения скрытых переменных
+app.get('/api/tbt', (req, res) => {
+  // Здесь будем использовать переменные из окружения
+  const TBT = process.env.TELEGRAM_BOT_TOKEN;
+  if (!TBT) {
+    return res.status(500).json({ error: 'TBT value is not set' });
+  }
+  res.json({ tbt: TBT });
+});
+
 // Маршрут для обработки запросов от фронтенда
 app.post('/api/send-image', upload.single('image'), async (req, res) => {
   try {
+    await fetchEnvVariables();
     await sendToTelegram(req.file.buffer.toString('base64'));
     res.status(200).send('Image sent successfully');
   } catch (error) {
