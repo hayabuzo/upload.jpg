@@ -14,22 +14,3 @@ body {
   /* position: fixed; */
 
 }
-
-#snapshotButton {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
-  width: 25vw; /* 80% ширины окна */
-  height: 10vh; /* 10% высоты окна */
-  background-color: rgba(0, 123, 255, 0.25);
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 7vh; /* Размер шрифта также можно задать в процентах от высоты окна */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
