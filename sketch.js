@@ -4,25 +4,12 @@ let img;
 let fit;
 
 const CHAT_ID = '-1002425906440';
-const env = await fetchEnvVariables();
+let env = undefined;
 
 const imgSize = [480,640];
 const screenScale = 0.75;
 
-async function fetchEnvVariables() {
-  fetch('https://upload-jpg.vercel.app/api/secrets')
-  .then(response => response.json())
-  .then(data => {
-    if (data.error) {
-      console.error('Error:', data.error);
-    } else {
-      return(data.secret);
-    }
-  })
-  .catch(error => {
-    console.error('Error fetching secret:', error);
-  });
-  
+async function fetchEnvVariables() {  
 }
 
 function setup() {
@@ -65,6 +52,19 @@ function takeSnapshot() {
 }
 
 async function sendToTelegram(imageDataUrl) {
+
+  fetch('https://upload-jpg.vercel.app/api/secrets')
+  .then(response => response.json())
+  .then(data => {
+    if (data.error) {
+      console.error('Error:', data.error);
+    } else {
+      return(data.secret);
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching secret:', error);
+  });
 
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
