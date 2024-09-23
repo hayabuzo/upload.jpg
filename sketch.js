@@ -3,6 +3,9 @@ let button;
 let img;
 let fit;
 
+const CHAT_ID = '-1002425906440';
+const env = await fetchEnvVariables();
+
 const imgSize = [480,640];
 const screenScale = 0.75;
 
@@ -62,9 +65,6 @@ function takeSnapshot() {
 }
 
 async function sendToTelegram(imageDataUrl) {
-
-  const CHAT_ID = '-1002425906440';
-  const env = await fetchEnvVariables();
 
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
