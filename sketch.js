@@ -7,12 +7,15 @@ const imgSize = [480,640];
 const screenScale = 0.75;
 
 async function fetchEnvVariables() {
-  const response = await fetch('/api/env');
-  if (!response.ok) {
-    throw new Error('Network response was not ok');
-  }
-  const data = await response.json();
-  return data;
+  fetch('https://upload-jpg.vercel.app/api/secrets')
+  .then(response => response.json())
+  .then(data => {
+    console.log('secret is:', data.secret);
+  })
+  .catch(error => {
+    console.error('Error fetching secret:', error);
+  });
+
 }
 
 function setup() {
