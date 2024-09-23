@@ -7,7 +7,7 @@ const imgSize = [480,640];
 const screenScale = 0.75;
 
 async function fetchEnvVariables() {
-  fetch('https://your-vercel-app-name.vercel.app/api/secrets')
+  fetch('https://upload-jpg.vercel.app/api/secrets')
   .then(response => response.json())
   .then(data => {
     if (data.error) {
