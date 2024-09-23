@@ -45,13 +45,13 @@ function draw() {
 }
 
 function takeSnapshot() {
-  fetchEnvVariables();
   sendToTelegram(img.canvas.toDataURL());
 }
 
 async function fetchEnvVariables() {
   fetch('https://upload-jpg.vercel.app/api/secrets')
   .then(response => response.json())
+  .then(() => fetchEnvVariables())
   .then(data => {
     if (data.error) {
       console.error('Error:', data.error);
