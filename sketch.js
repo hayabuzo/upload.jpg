@@ -45,7 +45,7 @@ function draw() {
 }
 
 function takeSnapshot() {
-  sendToTelegram(img.canvas.toDataURL());
+  runSequentially();
 }
 
 async function fetchEnvVariables() {
@@ -65,11 +65,9 @@ async function fetchEnvVariables() {
 }
 
 async function sendToTelegram(imageDataUrl) {
-
   // Преобразование DataURL в Blob
   fetch(imageDataUrl)
     .then(response => response.blob())
-    .then(() => fetchEnvVariables())
     .then(blob => {
       const formData = new FormData();
       formData.append('chat_id', CHAT_ID);
@@ -95,5 +93,14 @@ async function sendToTelegram(imageDataUrl) {
     .catch(error => {
       console.error('Error converting image to Blob:', error);
     });
+}
+
+async function runSequentially() {
+  try {
+    await fetchEnvVariables();
+    await sendToTelegram(img.canvas.toDataURL());
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
 
