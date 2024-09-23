@@ -33,6 +33,8 @@ async function sendToTelegram(imageDataUrl) {
       }
     });
 
+    console.log('Telegram API response:', telegramResponse.data);
+
     if (telegramResponse.status === 200) {
       console.log('Image sent successfully');
     } else {
