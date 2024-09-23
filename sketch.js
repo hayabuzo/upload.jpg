@@ -50,12 +50,12 @@ function takeSnapshot() {
 
 async function fetchEnvVariables() {
   try {
-    const response = await fetch('https://upload-jpg.vercel.app/api/secrets');
+    const response = await fetch('https://upload-jpg.vercel.app/api/tbt');
     const data = await response.json();
     if (data.error) {
       console.error('Error:', data.error);
     } else {
-      env = data.secret;
+      env = data.tbt;
       console.log('env set', env);
     }
   } catch (error) {
