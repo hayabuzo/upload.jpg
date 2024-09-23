@@ -6,8 +6,15 @@ let fit;
 let CID = '-1002425906440';
 let TBT = undefined;
 
+let state = 'capture';
+
 const imgSize = [480,640];
 const screenScale = 1.0;
+
+const tr = {
+  y: 640,
+  ySet: 0,
+}
 
 function setup() {
 
@@ -29,19 +36,68 @@ function setup() {
   });
 	video.hide(); 
 
-  button = createButton('📸');
-  button.id('snapshotButton');
-  button.mousePressed(takeSnapshot);
+  // button = createButton('📸');
+  // button.id('snapshotButton');
+  // button.mousePressed(takeSnapshot);
 
 	img = createGraphics(imgSize[0],imgSize[1]);
+  img.imageMode(CENTER);
+
+  textAlign(CENTER);
+  textSize(h*0.1);
+
+
 
 }
 
 function draw() {
-  fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
-	img.imageMode(CENTER);
-	img.image(video,imgSize[0]/2,imgSize[1]/2,video.width*fit,video.height*fit); 
-	image(img,0,0,width,height);
+
+  background(10);
+
+  tr.y += (tr.ySet-tr.y)/15;
+
+  switch (state) {
+    case 'capture':
+      fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
+      img.image(video,imgSize[0]/2,imgSize[1]/2,video.width*fit,video.height*fit); 
+      tr.ySet = 0;
+      image(img,0,tr.y,width,height);
+      text("📸", width/2, height*0.95);
+      if (mouseIsPressed && mouseY>height*0.8) { 
+        mouseIsPressed = false; 
+        state = 'review'
+      }
+      break;
+    case 'review':
+      image(img,0,tr.y,width,height);
+      text("🔁", width*0.25, height*0.95);
+      text("✉️", width*0.75, height*0.95);
+      if (mouseIsPressed && mouseY>height*0.8) { 
+        mouseIsPressed = false; 
+        if (mouseX<width*0.5) {
+          state = 'capture';
+        } else {
+          takeSnapshot();
+          state = 'sending';
+        }
+      }
+      break;
+    case 'sending':
+      tr.ySet = height;
+      push();
+        textSize(window.innerHeight*0.2);
+        text("📩", width*0.5, height*0.5);
+      pop();
+      image(img,0,tr.y,width,height);
+      text("🔁", width*0.5, height*0.95);
+      if (mouseIsPressed && mouseY>height*0.8) { 
+        mouseIsPressed = false; 
+        state = 'capture'
+      }
+      break;
+  }
+
+
 }
 
 function takeSnapshot() {
