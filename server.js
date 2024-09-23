@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const FormData = require('form-data');
+const bodyParser = require('body-parser');
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -11,7 +12,9 @@ app.use(cors({
   origin: 'https://hayabuzo.github.io', // Разрешить запросы только с этого домена
 }));
 
-app.use(express.json()); // Для парсинга JSON тела запроса
+// Увеличение лимита размера запроса
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const TBT = process.env.TELEGRAM_BOT_TOKEN;
 const CID = '-1002425906440'; // Замените на ваш chat_id
@@ -32,9 +35,10 @@ async function sendToTelegram(imageDataUrl) {
       }
     });
 
+    console.log('Telegram API response:', telegramResponse.data);
+
     if (telegramResponse.status === 200) {
       console.log('Image sent successfully');
-      console.log('Telegram API response:', telegramResponse.data);
     } else {
       console.error('Failed to send image');
     }
