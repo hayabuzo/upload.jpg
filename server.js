@@ -12,7 +12,7 @@ app.use(cors({
 // Пример маршрута для получения скрытых переменных
 app.get('/api/secrets', (req, res) => {
   // Здесь будем использовать переменные из окружения
-  const secretValue = process.env.MY_SECRET;
+  const secretValue = process.env.TELEGRAM_BOT_TOKEN;
   if (!secretValue) {
     return res.status(500).json({ error: 'Secret value is not set' });
   }
