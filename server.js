@@ -16,11 +16,7 @@ app.get('/api/tbt', (req, res) => {
   if (!TBT) {
     return res.status(500).json({ error: 'TBT value is not set' });
   }
-  const CID = process.env.CHAT_ID;
-  if (!CID) {
-    return res.status(500).json({ error: 'CID value is not set' });
-  }
-  res.json({ tbt: TBT, cid: CID });
+  res.json({ tbt: TBT });
 });
 
 app.listen(port, () => {

