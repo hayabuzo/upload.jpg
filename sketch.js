@@ -37,8 +37,10 @@ function setup() {
   },
   { flipped: false },
   () => {
-    state = 'capture';
-    fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
+    if (video.height > 300) {
+      state = 'capture';
+      fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
+    }
   });
 	video.hide(); 
 
