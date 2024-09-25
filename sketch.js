@@ -94,7 +94,8 @@ function draw() {
 
       drawImage();
       drawBorder()
-      text("📸", width/2, height*0.95);
+      // text("📸", width/2, height*0.95);
+      text(video.height, width/2, height*0.95);
       if (mouseIsPressed && mouseY>height*0.8) { 
         mouseIsPressed = false; 
         state = 'review'
