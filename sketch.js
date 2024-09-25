@@ -37,10 +37,8 @@ function setup() {
   },
   { flipped: false },
   () => {
-    if (video.height > 300) {
-      state = 'capture';
-      fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
-    }
+    state = 'capture';
+    fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
   });
 	video.hide(); 
 
@@ -88,19 +86,25 @@ function draw() {
       break;
       
     case 'capture':
-      img.image(video,imgSize[0]/2,imgSize[1]/2,video.width*fit,video.height*fit); 
-      tr.ySet = 0;
-      tr.sSet = 1;
-
-      drawImage();
-      drawBorder()
-      // text("📸", width/2, height*0.95);
-      text(video.height, width/2, height*0.95);
-      if (mouseIsPressed && mouseY>height*0.8) { 
-        mouseIsPressed = false; 
-        state = 'review'
+      if (video.height > 300) {
+        img.image(video,imgSize[0]/2,imgSize[1]/2,video.width*fit,video.height*fit); 
+        tr.ySet = 0;
+        tr.sSet = 1;
+  
+        drawImage();
+        drawBorder()
+        text("📸", width/2, height*0.95);
+        push();
+        fill(255);
+        text(video.height, width/2, height/2);
+        pop();
+        text(video.height, width/2, height*0.95);
+        if (mouseIsPressed && mouseY>height*0.8) { 
+          mouseIsPressed = false; 
+          state = 'review'
+        }
+        break;
       }
-      break;
 
     case 'review':
       drawImage();
