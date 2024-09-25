@@ -3,10 +3,6 @@ let button;
 let img;
 let fit;
 
-
-let CID = '-1002425906440';
-let TBT = undefined;
-
 let state = 'init';
 let camState = "🙄🔎📸";
 let camStateSize = 1;
@@ -43,8 +39,7 @@ function setup() {
   () => {
     state = 'capture';
     fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
-  }
-);
+  });
 	video.hide(); 
 
 	img = createGraphics(imgSize[0],imgSize[1]);
@@ -52,8 +47,6 @@ function setup() {
 
   textAlign(CENTER);
   textSize(h*0.1);
-
-
 
 }
 
@@ -142,7 +135,6 @@ function draw() {
       break;
 
   }
-
 
 }
 
