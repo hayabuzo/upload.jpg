@@ -46,13 +46,24 @@ function setup() {
   img.imageMode(CENTER);
 
   textAlign(CENTER);
-  textSize(h*0.1);
+  textSize(height*0.1);
 
 }
 
 function drawImage() {
   imageMode(CENTER)
   image(img,0.5*width,0.5*height+tr.y,width*tr.s,height*tr.s);
+}
+
+function drawText(txt, x, y) {
+  push();
+  textAlign(CENTER, CENTER);
+  textSize(height*0.02);
+  stroke(0);
+  strokeWeight(8);
+  fill(255);
+  text(txt, x, y);
+  pop();
 }
 
 function drawBorder() {
@@ -67,7 +78,7 @@ function drawBorder() {
 
 function drawCamState() {
   push();
-    textSize(window.innerHeight*0.1*camStateSize);
+    textSize(height*0.1*camStateSize);
     text(camState, width/2, height/2);
   pop();
 }
@@ -83,6 +94,7 @@ function draw() {
   switch (state) {
 
     case 'init':
+      drawText("поиск камеры", width*0.5, height*0.56);
       break;
       
     case 'capture':
@@ -107,6 +119,8 @@ function draw() {
       if(tr.s <= tr.sSet + 0.001) {
         text("🔁", width*0.25, height*0.85);
         text("✉️", width*0.75, height*0.85);
+        drawText("перенсять", width*0.25, height*0.9);
+        drawText(`отправить\nв канал`, width*0.75, height*0.9);
         if (mouseIsPressed && mouseY>height*0.6) { 
           mouseIsPressed = false; 
           if (mouseX<width*0.5) {
@@ -120,20 +134,23 @@ function draw() {
       break;
 
     case 'sending':
-      tr.ySet = height;
+      tr.ySet = -height;
       push();
-        camState = "💌"
+        camState = "📨"
         camStateSize = 2;
       pop();
+      drawText("снимок отправлен", width*0.5, height*0.03);
+      drawText("открыть канал", width*0.5, height*0.56);
       drawImage();
-      text("🔁", width*0.5, height*0.95);
+      text("🔁", width*0.5, height*0.85);
+      drawText("снять\nеще", width*0.5, height*0.9);
       if (mouseIsPressed) { 
         mouseIsPressed = false; 
-        if (mouseY>height*0.8) {
+        if (mouseY>height*0.65) {
           // state = 'capture'
           setup();
-        } else {
-          window.location.href = 'https://t.me/ff4651e9e031';
+        } else if (mouseY>height*0.35) {
+          window.location.href = 'https://t.me/s/ff4651e9e031';
         }
       }
       break;
