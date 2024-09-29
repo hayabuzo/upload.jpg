@@ -96,22 +96,25 @@ function draw() {
       if (mouseIsPressed && mouseY>height*0.8) { 
         mouseIsPressed = false; 
         state = 'review'
+        tr.sSet = 0.9;
       }
       break;
 
     case 'review':
       drawImage();
       drawBorder();
-      text("🔁", width*0.25, height*0.85);
-      text("✉️", width*0.75, height*0.85);
-      tr.sSet = 0.9;
-      if (mouseIsPressed && mouseY>height*0.6) { 
-        mouseIsPressed = false; 
-        if (mouseX<width*0.5) {
-          state = 'capture';
-        } else {
-          takeSnapshot();
-          state = 'sending';
+
+      if(tr.s <= tr.sSet + 0.001) {
+        text("🔁", width*0.25, height*0.85);
+        text("✉️", width*0.75, height*0.85);
+        if (mouseIsPressed && mouseY>height*0.6) { 
+          mouseIsPressed = false; 
+          if (mouseX<width*0.5) {
+            state = 'capture';
+          } else {
+            takeSnapshot();
+            state = 'sending';
+          }
         }
       }
       break;
