@@ -130,7 +130,8 @@ function draw() {
       if (mouseIsPressed) { 
         mouseIsPressed = false; 
         if (mouseY>height*0.8) {
-          state = 'capture'
+          // state = 'capture'
+          setup();
         } else {
           window.location.href = 'https://t.me/ff4651e9e031';
         }
