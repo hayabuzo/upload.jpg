@@ -37,8 +37,10 @@ function setup() {
   },
   { flipped: false },
   () => {
-    state = 'capture';
     fit = video.width>video.height*0.75 ? img.height/video.height : img.width/video.width;
+    if (exposureCheck(video)) {
+      state = 'capture';
+    }
   });
 	video.hide(); 
 
@@ -81,6 +83,19 @@ function drawCamState() {
     textSize(height*0.1*camStateSize);
     text(camState, width/2, height/2);
   pop();
+}
+
+function exposureCheck(src) {
+	let pixelsCounted = 0;
+	src.loadPixels();
+	for (let i = 0; i < src.pixels.length; i += 4) {
+		pixelsCounted += src.pixels[i]+src.pixels[i + 1]+src.pixels[i + 2];
+	}
+  if (pixelsCounted>0) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function draw() {
