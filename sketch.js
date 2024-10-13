@@ -28,6 +28,9 @@ function setup() {
     createCanvas(w*screenScale,w*screenScale*imgSize[1]/imgSize[0]);
   }
 
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  window.addEventListener('focus', handleFocus);
+
   video = createCapture({ 
     audio: false, 
     video: { 
@@ -194,4 +197,14 @@ async function sendImage() {
   .then(data => console.log(data))
   .catch(error => console.error('Error:', error));
   
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState === 'visible') {
+    // console.log('Страница стала видимой');
+  }
+}
+
+function handleFocus() {
+  // console.log('Окно получило фокус');
 }
