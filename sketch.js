@@ -57,12 +57,12 @@ function drawImage() {
   image(img,0.5*width,0.5*height+tr.y,width*tr.s,height*tr.s);
 }
 
-function drawText(txt, x, y) {
+function drawText(txt, x, y, weight = 8) {
   push();
   textAlign(CENTER, CENTER);
   textSize(height*0.02);
   stroke(0);
-  strokeWeight(8);
+  strokeWeight(weight);
   fill(255);
   text(txt, x, y);
   pop();
@@ -110,6 +110,7 @@ function draw() {
 
     case 'init':
       drawText("поиск камеры", width*0.5, height*0.56);
+      drawText("Если камера не находится, то откройте ссылку в \nChrome или Safari и разрешите доступ к камере.", width*0.5, height*0.75, 4);
       break;
       
     case 'capture':
