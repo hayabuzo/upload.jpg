@@ -22,20 +22,28 @@ const CID = '-1002425906440'; // Замените на ваш chat_id
 // Функция для отправки изображения в Telegram
 async function sendToTelegram(imageDataUrl) {
   try {
-    // Преобразование DataURL в Blob
+    // Преобразование DataURL в Blob (на самом деле ArrayBuffer)
     const response = await axios.get(imageDataUrl, { responseType: 'arraybuffer' });
+
     const formData = new FormData();
     formData.append('chat_id', CID);
-    formData.append('photo', response.data, {
+    formData.append('photo', Buffer.from(response.data), {
       filename: 'snapshot.png',
       contentType: 'image/png'
     });
 
-    const telegramResponse = await axios.post(`https://api.telegram.org/bot${TBT}/sendPhoto`, formData, {
-      headers: {
-        ...formData.getHeaders()
+    // Подпись с гиперссылкой
+    const caption = '✉️ <a href="https://hayabuzo.github.io/upload.jpg/">отправить свой снимок</a> 📸';
+    formData.append('caption', caption);
+    formData.append('parse_mode', 'HTML');
+
+    const telegramResponse = await axios.post(
+      `https://api.telegram.org/bot${TBT}/sendPhoto`,
+      formData,
+      {
+        headers: formData.getHeaders()
       }
-    });
+    );
 
     console.log('Telegram API response:', telegramResponse.data);
 
