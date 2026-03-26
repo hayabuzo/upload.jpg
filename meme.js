@@ -10,10 +10,11 @@ function createMemeModal() {
 
   const box = document.createElement('div');
   box.style.cssText = `
-    background: #1c1c1e; border-radius: 16px; padding: 20px;
-    width: 82%; max-width: 340px;
-    display: flex; flex-direction: column; gap: 10px;
+    background: #1c1c1e; border-radius: min(4vw, 16px); padding: min(5vw, 20px);
+    width: min(88vw, 340px);
+    display: flex; flex-direction: column; gap: min(3vw, 12px);
     font-family: -apple-system, sans-serif;
+    box-sizing: border-box;
   `;
 
   function makeInput(id, placeholder) {
@@ -23,22 +24,25 @@ function createMemeModal() {
     inp.placeholder = placeholder;
     inp.autocomplete = 'off';
     inp.style.cssText = `
-      padding: 10px 12px; border-radius: 10px; border: none;
-      font-size: 16px; background: #2c2c2e; color: #fff;
+      padding: min(3.5vw, 10px) min(4vw, 12px); 
+      border-radius: min(2.5vw, 10px); border: none;
+      font-size: max(16px, min(4vw, 16px)); background: #2c2c2e; color: #fff;
       outline: none; width: 100%; box-sizing: border-box;
     `;
     return inp;
   }
 
   const btnRow = document.createElement('div');
-  btnRow.style.cssText = 'display:flex; gap:10px; margin-top:2px;';
+  btnRow.style.cssText = `display:flex; gap: min(3vw, 10px); margin-top: min(1vw, 4px);`;
 
   function makeBtn(label, bg, handler) {
     const b = document.createElement('button');
     b.textContent = label;
     b.style.cssText = `
-      flex:1; padding:12px; border-radius:10px; border:none;
-      background:${bg}; color:#fff; font-size:16px;
+      flex:1; padding: min(3.5vw, 12px); 
+      border-radius: min(2.5vw, 10px); border: none;
+      background:${bg}; color:#fff; 
+      font-size: max(16px, min(4vw, 16px));
       font-weight:600; cursor:pointer;
     `;
     b.addEventListener('click', handler);
