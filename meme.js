@@ -3,18 +3,34 @@
 function createMemeModal() {
   modal = document.createElement('div');
   modal.style.cssText = `
-    display: none; position: fixed;
-    inset: 0; background: rgba(0,0,0,0.75);
-    z-index: 999; justify-content: center; align-items: center;
+    display: none; 
+    position: fixed;
+    inset: 0; 
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(4px);
+    z-index: 9999; 
+    justify-content: center; 
+    align-items: center;
+    padding: 16px;
+    box-sizing: border-box;
   `;
 
   const box = document.createElement('div');
   box.style.cssText = `
-    background: #1c1c1e; border-radius: min(4vw, 16px); padding: min(5vw, 20px);
-    width: min(88vw, 340px);
-    display: flex; flex-direction: column; gap: min(3vw, 12px);
-    font-family: -apple-system, sans-serif;
+    background: #1c1c1e; 
+    border-radius: 20px; 
+    padding: 28px;
+    width: 100%;
+    max-width: 480px; /* Увеличили для мобильных */
+    max-height: 85vh;
+    overflow-y: auto;
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     box-sizing: border-box;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    color: #fff;
   `;
 
   function makeInput(id, placeholder) {
@@ -24,27 +40,59 @@ function createMemeModal() {
     inp.placeholder = placeholder;
     inp.autocomplete = 'off';
     inp.style.cssText = `
-      padding: min(3.5vw, 10px) min(4vw, 12px); 
-      border-radius: min(2.5vw, 10px); border: none;
-      font-size: max(16px, min(4vw, 16px)); background: #2c2c2e; color: #fff;
-      outline: none; width: 100%; box-sizing: border-box;
+      padding: 16px 18px; 
+      border-radius: 14px; 
+      border: 2px solid #3a3a3c;
+      font-size: 17px;
+      background: #2c2c2e; 
+      color: #fff;
+      outline: none; 
+      width: 100%; 
+      box-sizing: border-box;
+      transition: border-color 0.2s, transform 0.1s;
     `;
+    
+    inp.onfocus = () => {
+      inp.style.borderColor = '#2ecc71';
+      inp.style.transform = 'scale(1.02)';
+    };
+    inp.onblur = () => {
+      inp.style.borderColor = '#3a3a3c';
+      inp.style.transform = 'scale(1)';
+    };
+    
     return inp;
   }
 
   const btnRow = document.createElement('div');
-  btnRow.style.cssText = `display:flex; gap: min(3vw, 10px); margin-top: min(1vw, 4px);`;
+  btnRow.style.cssText = `
+    display:flex; 
+    gap: 14px; 
+    margin-top: 10px;
+  `;
 
   function makeBtn(label, bg, handler) {
     const b = document.createElement('button');
     b.textContent = label;
     b.style.cssText = `
-      flex:1; padding: min(3.5vw, 12px); 
-      border-radius: min(2.5vw, 10px); border: none;
-      background:${bg}; color:#fff; 
-      font-size: max(16px, min(4vw, 16px));
-      font-weight:600; cursor:pointer;
+      flex:1; 
+      padding: 18px; 
+      border-radius: 14px; 
+      border: none;
+      background:${bg}; 
+      color:#fff; 
+      font-size: 17px;
+      font-weight: 700; 
+      cursor:pointer;
+      transition: transform 0.1s, opacity 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 54px; /* Минимальная высота для удобного тапа */
     `;
+    
+    b.onmousedown = () => b.style.transform = 'scale(0.97)';
+    b.onmouseup = () => b.style.transform = 'scale(1)';
+    b.onmouseleave = () => b.style.transform = 'scale(1)';
+    
     b.addEventListener('click', handler);
     return b;
   }
@@ -57,8 +105,8 @@ function createMemeModal() {
     closeModal();
   }));
 
-  box.appendChild(makeInput('memeTop', 'верхний текст'));
-  box.appendChild(makeInput('memeBottom', 'нижний текст'));
+  box.appendChild(makeInput('memeTop', 'Текст сверху'));
+  box.appendChild(makeInput('memeBottom', 'Текст снизу'));
   box.appendChild(btnRow);
   modal.appendChild(box);
   document.body.appendChild(modal);
