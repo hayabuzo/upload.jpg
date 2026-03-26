@@ -20,11 +20,6 @@ const tr = {
 
 function setup() {
 
-  // запрет зума
-  let meta = document.querySelector('meta[name=viewport]');
-  if (!meta) { meta = document.createElement('meta'); meta.name = 'viewport'; document.head.appendChild(meta); }
-  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
-
   pixelDensity(1);
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -33,6 +28,15 @@ function setup() {
   } else {
     createCanvas(w * screenScale, w * screenScale * imgSize[1] / imgSize[0]);
   }
+
+  // запрет зума
+  let meta = document.querySelector('meta[name=viewport]');
+  if (!meta) { meta = document.createElement('meta'); meta.name = 'viewport'; document.head.appendChild(meta); }
+  meta.content = 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no';
+
+  // setTimeout(() => {
+  //   textFont('Anton'); // имя из Google Fonts
+  // }, 500);
 
   document.addEventListener('visibilitychange', handleVisibilityChange);
   window.addEventListener('focus', handleFocus);
