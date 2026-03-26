@@ -88,7 +88,7 @@ function applyMemeText(topText, bottomText) {
   const maxW = imgSize[0] - padding * 2;
 
   g.push();
-  g.textFont('Impact');
+  g.textFont(impactFont);
   g.textSize(fs);
   g.strokeWeight(fs * 0.14);
   g.strokeJoin(ROUND);

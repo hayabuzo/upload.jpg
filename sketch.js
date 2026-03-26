@@ -18,6 +18,10 @@ const tr = {
   sSet: 1,
 };
 
+function preload() {
+  impactFont = loadFont('assets/Impact.ttf');
+}
+
 function setup() {
 
   // запрет зума
@@ -34,12 +38,15 @@ function setup() {
     createCanvas(w * screenScale, w * screenScale * imgSize[1] / imgSize[0]);
   }
 
-  // setTimeout(() => {
-  //   textFont('Anton'); // имя из Google Fonts
-  // }, 500);
-
   document.addEventListener('visibilitychange', handleVisibilityChange);
   window.addEventListener('focus', handleFocus);
+
+  setTimeout(() => {
+    if (!impactFont) {
+      console.log('Impact не загрузился, используем Arial Black');
+      textFont('Arial Black'); // или 'sans-serif'
+    }
+  }, 5000);
 
   video = createCapture({
     audio: false,
